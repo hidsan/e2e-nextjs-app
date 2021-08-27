@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: miguel-hidalgo-pipeline-run-
+spec:
+  serviceAccountName: build-bot
+  params:
+    - name: source-repo
+      value: https://github.com/hidsan/e2e-nextjs-app.git
+    - name: image-repo
+      value: quay.io/miguel_hidalgo_ibm/e2e-assignment-app
+    - name: app-name
+      value: e2e-assignment-app
+  pipelineRef:
+    name: e2e-pipeline
+  workspaces:
+    - name: pipeline-shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
